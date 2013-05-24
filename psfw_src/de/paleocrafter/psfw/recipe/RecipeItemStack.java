@@ -1,10 +1,10 @@
-package de.paleocrafter.multiio.recipe;
+package de.paleocrafter.psfw.recipe;
 
 import net.minecraft.item.ItemStack;
 
 /**
  * 
- * MMO Materials
+ * PaleoSlotFramework
  * 
  * RecipeItemStack
  * 

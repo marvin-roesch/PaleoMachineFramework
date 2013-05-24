@@ -1,16 +1,16 @@
-package de.paleocrafter.multiio;
+package de.paleocrafter.psfw;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
-import de.paleocrafter.multiio.recipe.MultiOutput;
-import de.paleocrafter.multiio.recipe.RecipeItemStack;
+import de.paleocrafter.psfw.recipe.MultiOutput;
+import de.paleocrafter.psfw.recipe.RecipeItemStack;
 
 import net.minecraft.item.ItemStack;
 
 /**
  * 
- * MMO Materials
+ * PaleoSlotFramework
  * 
  * MultiOutputRecipes
  * 

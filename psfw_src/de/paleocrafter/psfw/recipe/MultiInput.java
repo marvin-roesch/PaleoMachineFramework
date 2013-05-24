@@ -1,4 +1,4 @@
-package de.paleocrafter.multiio.recipe;
+package de.paleocrafter.psfw.recipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 /**
  * 
- * MMO Materials
+ * PaleoSlotFramework
  * 
  * MultiInput
  * 
