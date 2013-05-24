@@ -11,7 +11,7 @@ To get the whole framework set up you have to follow these simple steps:
 1. Download the latest version of the framework
   - You can get the ZIP file provided in the root directory, containing the latest stable version of the framework
   - You can get the source code by browsing to the "multiio" package inside the "multiio_src" folder
-2. (Extract and) put the files somewhere inside your modding project, I recommend putting them in a package called "multiio" inside your main util package
+2. (Extract from the "src" folder and) put the files somewhere inside your modding project, I recommend putting them in a package called "multiio" inside your main util package
 3. You're done! For your first steps with the framework, have a look at the [Getting started](#getting-started) section
 
 Getting started

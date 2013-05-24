@@ -1,0 +1,38 @@
+PaleoSlotFrameWork
+==================
+
+A completely working framework for creating machines
+with multiple in- and output slots used in the recipes for MinecraftForge.
+It supports shaped and shapeless recipes and chances to get a certain output item.
+
+Setup
+-----
+
+To get the whole framework set up you have to follow these simple steps:
+
+1.  Extract fromt he "src" folder and put the files somewhere inside your
+    modding project.
+    I recommend putting them in a package called "multiio" inside your main util package
+2.  You're done! For your first steps with the framework,
+    have a look at the Getting started section
+
+Getting started
+---------------
+For a guide on how to get started with the framework look at:
+https://github.com/PaleoCrafter/PaleoSlotFramework/blob/master/README.md
+
+Contributing
+------------
+Any help to improve this project is welcome.
+If you just want to make a suggestion, do so!
+If you find bugs or have a more performant solution
+for a certain task, create a new issue or pull request.
+
+License
+-------
+The framework is distributed under the LGPL. For details see COPYING.LESSER.
+You're allowed to use the framwork without asking or anything else.
+You're free to change anything in the source files as long as you mention me (PaleoCrafter)
+as one of the authors. If you redistribute the framework as part of your own project
+it can be distributed under another license, but you have to name me (PaleoCrafter) somewhere.
+You're NOT allowed to redistribute the API under another license.

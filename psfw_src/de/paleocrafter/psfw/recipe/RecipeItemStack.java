@@ -28,7 +28,19 @@ public class RecipeItemStack {
     public boolean equals(Object obj) {
         if (!(obj instanceof RecipeItemStack))
             return false;
-        return stack.isItemEqual(((RecipeItemStack) obj).getStack());
+
+        ItemStack is = ((RecipeItemStack) obj).getStack();
+        if (is.itemID == stack.itemID)
+            if (is.getItemDamage() == stack.getItemDamage())
+                if (is.stackSize == stack.stackSize)
+                    if (is.hasTagCompound() || stack.hasTagCompound()) {
+                        if (is.hasTagCompound() && stack.hasTagCompound()) {
+                            return is.getTagCompound().equals(
+                                    stack.getTagCompound());
+                        }
+                    } else
+                        return true;
+        return false;
     }
 
     public ItemStack getStack() {
