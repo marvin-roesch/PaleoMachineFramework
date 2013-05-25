@@ -1,15 +1,15 @@
-package de.paleocrafter.psfw;
+package de.paleocrafter.pmfw;
 
 import java.util.HashMap;
 
 import net.minecraft.item.ItemStack;
 
-import de.paleocrafter.psfw.recipe.RecipeData;
-import de.paleocrafter.psfw.recipe.RecipeItemStack;
+import de.paleocrafter.pmfw.recipe.RecipeData;
+import de.paleocrafter.pmfw.recipe.RecipeItemStack;
 
 /**
  * 
- * PaleoSlotFramework
+ * PaleoMachineFramework
  * 
  * SimpleRecipese
  * 

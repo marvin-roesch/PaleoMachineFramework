@@ -1,11 +1,11 @@
-package de.paleocrafter.psfw.recipe;
+package de.paleocrafter.pmfw.recipe;
 
 import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 
 /**
  * 
- * PaleoSlotFramework
+ * PaleoMachineFramework
  * 
  * MultiOutput
  * 

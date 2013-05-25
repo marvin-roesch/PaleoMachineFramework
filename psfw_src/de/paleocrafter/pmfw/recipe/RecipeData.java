@@ -1,8 +1,8 @@
-package de.paleocrafter.psfw.recipe;
+package de.paleocrafter.pmfw.recipe;
 
 /**
  *
- * PaleoSlotFramework
+ * PaleoMachineFramework
  *
  * RecipeData
  *

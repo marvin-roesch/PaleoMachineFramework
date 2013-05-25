@@ -1,20 +1,36 @@
-PaleoSlotFrameWork
-==================
+PaleoMachineFramework
+=====================
 
-A completely working framework for creating machines
-with multiple in- and output slots used in the recipes for MinecraftForge.
-It supports shaped and shapeless recipes and chances to get a certain output item.
+The PaleoMachineFramework (or PMFW) is a system created for MinecraftForge.
+It allows you to create recipe handlers for you custom machines (and much more to come).
+Its main features are:
+- Easy-to-use handler for simple recipes (1 input and 1 output)
+- Handlers for recipes with:
+  - Multiple inputs
+  - Multiple outputs
+  - Multiple in- and outputs
+- The ability to set chances to get a certain output
+- Additional values for the recipes (e.g. a needed level of heat for the recipe to work)
+
+Later on there will be other things to make the creation of machines even easier.
+Some features planned are:
+- Integration of the upcoming PowerGrid Framework
+- Multiple base classes for your machines' TileEntities to make processing easier
 
 Setup
 -----
 
 To get the whole framework set up you have to follow these simple steps:
 
-1.  Extract fromt he "src" folder and put the files somewhere inside your
-    modding project.
-    I recommend putting them in a package called "multiio" inside your main util package
-2.  You're done! For your first steps with the framework,
-    have a look at the Getting started section
+1.  Download the latest version of the framework
+    - You can get the ZIP file provided in the root directory,
+      containing the latest stable version of the framework
+    - You can get the source code by browsing to the "pmfw" package
+      inside the "pmfw_src" folder
+2.  (Extract from the "src" folder and) put the files somewhere inside your modding project,
+    I recommend putting them in a package called "pmfw" inside your main util package
+3.  You're done! For your first steps with the framework,
+    have a look at the [Getting started](#getting-started) section
 
 Getting started
 ---------------
@@ -31,8 +47,8 @@ for a certain task, create a new issue or pull request.
 License
 -------
 The framework is distributed under the LGPL. For details see COPYING.LESSER.
-You're allowed to use the framwork without asking or anything else.
-You're free to change anything in the source files as long as you mention me (PaleoCrafter)
-as one of the authors. If you redistribute the framework as part of your own project
-it can be distributed under another license, but you have to name me (PaleoCrafter) somewhere.
+You're allowed to use the framwork without asking or anything else. You're free to change anything
+in the source files as long as you mention me (PaleoCrafter) as one of the authors.
+If you redistribute the framework as part of your own project it can be distributed under another license,
+but you have to name me (PaleoCrafter) somewhere.
 You're NOT allowed to redistribute the API under another license.

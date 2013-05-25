@@ -1,10 +1,10 @@
-package de.paleocrafter.psfw.recipe;
+package de.paleocrafter.pmfw.recipe;
 
 import net.minecraft.item.ItemStack;
 
 /**
  * 
- * PaleoSlotFramework
+ * PaleoMachineFramework
  * 
  * RecipeItemStack
  * 

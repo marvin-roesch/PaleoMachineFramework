@@ -1,17 +1,17 @@
-package de.paleocrafter.psfw;
+package de.paleocrafter.pmfw;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
-import de.paleocrafter.psfw.recipe.MultiInput;
-import de.paleocrafter.psfw.recipe.MultiOutput;
-import de.paleocrafter.psfw.recipe.RecipeData;
+import de.paleocrafter.pmfw.recipe.MultiInput;
+import de.paleocrafter.pmfw.recipe.MultiOutput;
+import de.paleocrafter.pmfw.recipe.RecipeData;
 
 import net.minecraft.item.ItemStack;
 
 /**
  * 
- * PaleoSlotFramework
+ * PaleoMachineFramework
  * 
  * MultiIORecipes
  * 
