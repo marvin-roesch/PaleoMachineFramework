@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import de.paleocrafter.psfw.recipe.MultiInput;
 import de.paleocrafter.psfw.recipe.MultiOutput;
+import de.paleocrafter.psfw.recipe.RecipeData;
 
 import net.minecraft.item.ItemStack;
 
@@ -19,7 +20,7 @@ import net.minecraft.item.ItemStack;
  * 
  */
 public class MultiIORecipes {
-    private HashMap<MultiInput, MultiOutput> recipes;
+    private HashMap<MultiInput, HashMap<String, RecipeData>> recipes;
     private int inputAmount;
     private int outputAmount;
     private boolean shapeless;
@@ -41,30 +42,46 @@ public class MultiIORecipes {
         this.outputAmount = outputAmount;
         this.shapeless = shapeless;
 
-        recipes = new HashMap<MultiInput, MultiOutput>();
+        recipes = new HashMap<MultiInput, HashMap<String, RecipeData>>();
     }
 
     /**
      * 
      * Adds a recipe to the internal list. The amount of arguments must match
-     * the output and input amount given in the constructor.
+     * the output and input amount given in the constructor. The recipe won't
+     * have additional data and the chance for every output will be 100(%).
      * 
-     * @param input
+     * @param inputs
      *            An array of ItemStacks needed to get the output.
      * @param outputs
      *            An array of ItemStacks given when the input is correct.
      * @return true, if the recipe was added successfully. Otherwise false
      */
     public boolean addRecipe(ItemStack[] inputs, ItemStack[] outputs) {
-        if (!(outputs.length < outputAmount || outputs.length > outputAmount)
-                && !(inputs.length < inputAmount || inputs.length > inputAmount)) {
-            int[] chances = new int[outputs.length];
-            Arrays.fill(chances, 100);
-            recipes.put(new MultiInput(shapeless, inputs), new MultiOutput(
-                    chances, outputs));
-            return true;
-        }
-        return false;
+        return addRecipe(inputs, outputs, null);
+    }
+
+    /**
+     * 
+     * Adds a recipe to the internal list. The amount of arguments must match
+     * the output and input amount given in the constructor. The chance for
+     * every output will be 100(%).
+     * 
+     * @param inputs
+     *            An array of ItemStacks needed to get the output.
+     * @param outputs
+     *            An array of ItemStacks given when the input is correct.
+     * @param additionalData
+     *            An array of RecipeData objects. The data will be added among
+     *            its keys to the recipe for later use. Can be null if you don't
+     *            have additional data
+     * @return true, if the recipe was added successfully. Otherwise false
+     */
+    public boolean addRecipe(ItemStack[] inputs, ItemStack[] outputs,
+            RecipeData[] additionalData) {
+        int[] chances = new int[outputs.length];
+        Arrays.fill(chances, 100);
+        return addRecipe(inputs, outputs, chances, additionalData);
     }
 
     /**
@@ -79,17 +96,30 @@ public class MultiIORecipes {
      * @param chances
      *            An array of Integers for the percentages of getting the
      *            matching certain item
+     * @param additionalData
+     *            An array of RecipeData objects. The data will be added among
+     *            its keys to the recipe for later use. Can be null if you don't
+     *            have additional data
      * @return true, if the recipe was added successfully. Otherwise false
      */
     public boolean addRecipe(ItemStack[] inputs, ItemStack[] outputs,
-            int[] chances) {
-        if (!(outputs.length < outputAmount || outputs.length > outputAmount)
-                && !(inputs.length < inputAmount || inputs.length > inputAmount)
-                && !(chances.length < outputAmount || chances.length > outputAmount)) {
-            recipes.put(new MultiInput(shapeless, inputs), new MultiOutput(
-                    chances, outputs));
-            return true;
-        }
+            int[] chances, RecipeData[] additionalData) {
+        if (inputs != null)
+            if (outputs != null)
+                if (outputs.length == outputAmount
+                        && inputs.length == inputAmount
+                        && chances.length == outputAmount) {
+                    HashMap<String, RecipeData> data = new HashMap<String, RecipeData>();
+                    data.put("output", new RecipeData("output",
+                            new MultiOutput(chances, outputs)));
+                    if (additionalData != null && additionalData.length > 0)
+                        for (RecipeData obj : additionalData) {
+                            if (obj != null && !obj.getKey().equals("output"))
+                                data.put(obj.getKey(), obj);
+                        }
+                    recipes.put(new MultiInput(shapeless, inputs), data);
+                    return true;
+                }
         return false;
     }
 
@@ -105,9 +135,11 @@ public class MultiIORecipes {
      *         exist.
      */
     public MultiOutput getResult(ItemStack... inputs) {
-        MultiInput key = new MultiInput(shapeless, inputs);
-        if (recipes.containsKey(key)) {
-            return recipes.get(key);
+        if (inputs != null && inputs.length == inputAmount) {
+            MultiInput key = new MultiInput(shapeless, inputs);
+            if (recipes.containsKey(key)) {
+                return (MultiOutput) recipes.get(key).get("output").getValue();
+            }
         }
         return null;
     }
@@ -124,5 +156,28 @@ public class MultiIORecipes {
      */
     public boolean isRecipeValid(ItemStack... inputs) {
         return getResult(inputs) != null;
+    }
+
+    /**
+     * 
+     * Gets the additional value of the recipe for the given key and inputs.
+     * 
+     * @param inputs
+     *            The inputs of the recipe to get the value for.
+     * @param key
+     *            The key of the value.
+     * @return null, if the value or the recipe don't exist.
+     */
+    public Object getAdditionalValue(ItemStack[] inputs, String key) {
+        if (inputs != null) {
+            MultiInput stack = new MultiInput(shapeless, inputs);
+            if (recipes.containsKey(stack)) {
+                if (key != null) {
+                    if (recipes.get(stack).containsKey(key))
+                        return recipes.get(stack).get(key).getValue();
+                }
+            }
+        }
+        return null;
     }
 }
