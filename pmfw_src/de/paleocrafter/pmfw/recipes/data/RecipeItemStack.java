@@ -1,4 +1,4 @@
-package de.paleocrafter.pmfw.recipe;
+package de.paleocrafter.pmfw.recipes.data;
 
 import net.minecraft.item.ItemStack;
 
@@ -30,16 +30,22 @@ public class RecipeItemStack {
             return false;
 
         ItemStack is = ((RecipeItemStack) obj).getStack();
-        if (is.itemID == stack.itemID)
-            if (is.getItemDamage() == stack.getItemDamage())
-                if (is.stackSize == stack.stackSize)
+        if (stack != null && is != null) {
+            if (is.itemID == stack.itemID) {
+                if (is.getItemDamage() == stack.getItemDamage()) {
                     if (is.hasTagCompound() || stack.hasTagCompound()) {
                         if (is.hasTagCompound() && stack.hasTagCompound()) {
                             return is.getTagCompound().equals(
                                     stack.getTagCompound());
                         }
-                    } else
+                    } else {
                         return true;
+                    }
+                }
+            }
+        } else {
+            return true;
+        }
         return false;
     }
 

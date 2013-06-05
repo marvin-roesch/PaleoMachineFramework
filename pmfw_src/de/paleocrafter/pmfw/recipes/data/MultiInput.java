@@ -1,10 +1,13 @@
-package de.paleocrafter.pmfw.recipe;
+package de.paleocrafter.pmfw.recipes.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multisets;
+
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -35,8 +38,11 @@ public class MultiInput {
     public MultiInput(boolean shapeless, ItemStack... inputs) {
         this.shapeless = shapeless;
         ArrayList<RecipeItemStack> temp = new ArrayList<RecipeItemStack>();
-        for (ItemStack stack : inputs)
-            temp.add(new RecipeItemStack(stack));
+        for (ItemStack stack : inputs) {
+            if (stack != null)
+                temp.add(new RecipeItemStack(stack));
+            temp.add(new RecipeItemStack(new ItemStack(Block.bedrock, 1)));
+        }
         this.inputs = temp.toArray(new RecipeItemStack[inputs.length]);
     }
 
@@ -99,11 +105,12 @@ public class MultiInput {
             RecipeItemStack[] inputs2) {
         boolean valid = false;
         if (shapeless) {
-            Set<RecipeItemStack> set1 = new HashSet<RecipeItemStack>(
-                    Arrays.asList(inputs1));
-            Set<RecipeItemStack> set2 = new HashSet<RecipeItemStack>(
-                    Arrays.asList(inputs2));
-            return set1.containsAll(set2);
+            Multiset<RecipeItemStack> set1 = HashMultiset.create(Arrays
+                    .asList(inputs1));
+            Multiset<RecipeItemStack> set2 = HashMultiset.create(Arrays
+                    .asList(inputs2));
+
+            return Multisets.containsOccurrences(set2, set1);
         } else {
             for (int i = 0; i < inputs1.length; i++) {
                 if (inputs1[i].equals(inputs2[i]))

@@ -1,11 +1,12 @@
-package de.paleocrafter.pmfw;
+package de.paleocrafter.pmfw.recipes;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 
-import de.paleocrafter.pmfw.recipe.MultiOutput;
-import de.paleocrafter.pmfw.recipe.RecipeData;
-import de.paleocrafter.pmfw.recipe.RecipeItemStack;
+import de.paleocrafter.pmfw.recipes.data.MultiOutput;
+import de.paleocrafter.pmfw.recipes.data.RecipeData;
+import de.paleocrafter.pmfw.recipes.data.RecipeItemStack;
 
 import net.minecraft.item.ItemStack;
 
@@ -20,7 +21,7 @@ import net.minecraft.item.ItemStack;
  * 
  */
 public class MultiOutputRecipes {
-    private HashMap<RecipeItemStack, HashMap<String, RecipeData>> recipes;
+    private Table<RecipeItemStack, String, RecipeData> recipes;
     private int outputAmount;
 
     /**
@@ -34,7 +35,7 @@ public class MultiOutputRecipes {
     public MultiOutputRecipes(int outputAmount) {
         this.outputAmount = outputAmount;
 
-        recipes = new HashMap<RecipeItemStack, HashMap<String, RecipeData>>();
+        recipes = HashBasedTable.create();
     }
 
     /**
@@ -77,21 +78,21 @@ public class MultiOutputRecipes {
      */
     public boolean addRecipe(ItemStack input, ItemStack[] outputs,
             int[] chances, RecipeData[] additionalData) {
-        if (input != null)
+        if (input != null) {
+            RecipeItemStack recipeStack = new RecipeItemStack(input);
             if (outputs != null)
                 if (outputs.length == outputAmount
                         && chances.length == outputAmount) {
-                    HashMap<String, RecipeData> data = new HashMap<String, RecipeData>();
-                    data.put("output", new RecipeData("output",
+                    recipes.put(recipeStack, "output", new RecipeData("output",
                             new MultiOutput(chances, outputs)));
                     if (additionalData != null && additionalData.length > 0)
                         for (RecipeData obj : additionalData) {
                             if (obj != null && !obj.getKey().equals("output"))
-                                data.put(obj.getKey(), obj);
+                                recipes.put(recipeStack, obj.getKey(), obj);
                         }
-                    recipes.put(new RecipeItemStack(input), data);
                     return true;
                 }
+        }
         return false;
     }
 
@@ -107,8 +108,8 @@ public class MultiOutputRecipes {
     public MultiOutput getResult(ItemStack input) {
         if (input != null) {
             RecipeItemStack key = new RecipeItemStack(input);
-            if (recipes.containsKey(key)) {
-                return (MultiOutput) recipes.get(key).get("output").getValue();
+            if (recipes.containsRow(key)) {
+                return (MultiOutput) recipes.row(key).get("output").getValue();
             }
         }
         return null;
@@ -139,10 +140,10 @@ public class MultiOutputRecipes {
     public Object getAdditionalValue(ItemStack input, String key) {
         if (input != null) {
             RecipeItemStack stack = new RecipeItemStack(input);
-            if (recipes.containsKey(stack)) {
+            if (recipes.containsRow(stack)) {
                 if (key != null) {
-                    if (recipes.get(stack).containsKey(key))
-                        return recipes.get(stack).get(key).getValue();
+                    if (recipes.containsColumn(key))
+                        return recipes.row(stack).get(key).getValue();
                 }
             }
         }

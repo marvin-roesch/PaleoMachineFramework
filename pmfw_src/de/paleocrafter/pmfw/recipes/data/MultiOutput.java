@@ -1,4 +1,4 @@
-package de.paleocrafter.pmfw.recipe;
+package de.paleocrafter.pmfw.recipes.data;
 
 import java.util.ArrayList;
 import net.minecraft.item.ItemStack;

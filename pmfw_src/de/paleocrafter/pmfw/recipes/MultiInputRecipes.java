@@ -1,9 +1,10 @@
-package de.paleocrafter.pmfw;
+package de.paleocrafter.pmfw.recipes;
 
-import java.util.HashMap;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 
-import de.paleocrafter.pmfw.recipe.MultiInput;
-import de.paleocrafter.pmfw.recipe.RecipeData;
+import de.paleocrafter.pmfw.recipes.data.MultiInput;
+import de.paleocrafter.pmfw.recipes.data.RecipeData;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -17,7 +18,7 @@ import net.minecraft.item.ItemStack;
  * 
  */
 public class MultiInputRecipes {
-    private HashMap<MultiInput, HashMap<String, RecipeData>> recipes;
+    private Table<MultiInput, String, RecipeData> recipes;
     private int inputAmount;
     private boolean shapeless;
 
@@ -33,8 +34,7 @@ public class MultiInputRecipes {
     public MultiInputRecipes(int inputAmount, boolean shapeless) {
         this.inputAmount = inputAmount;
         this.shapeless = shapeless;
-
-        recipes = new HashMap<MultiInput, HashMap<String, RecipeData>>();
+        recipes = HashBasedTable.create();
     }
 
     /**
@@ -70,20 +70,18 @@ public class MultiInputRecipes {
     public boolean addRecipe(ItemStack[] inputs, ItemStack output,
             RecipeData[] additionalData) {
         if (inputs != null)
-            if (!(inputs.length < inputAmount || inputs.length > inputAmount)) {
-                HashMap<String, RecipeData> data = new HashMap<String, RecipeData>();
-                if (output != null)
-                    data.put("output", new RecipeData("output", output));
-                else
-                    return false;
-                if (additionalData != null && additionalData.length > 0)
-                    for (RecipeData obj : additionalData) {
-                        if (obj != null && !obj.getKey().equals("output"))
-                            data.put(obj.getKey(), obj);
-                    }
-                recipes.put(new MultiInput(shapeless, inputs), data);
-                return true;
-            }
+            if (output != null)
+                if (!(inputs.length < inputAmount || inputs.length > inputAmount)) {
+                    MultiInput recipeInput = new MultiInput(shapeless, inputs);
+                    recipes.put(recipeInput, "output", new RecipeData("output",
+                            output));
+                    if (additionalData != null && additionalData.length > 0)
+                        for (RecipeData obj : additionalData) {
+                            if (obj != null && !obj.getKey().equals("output"))
+                                recipes.put(recipeInput, obj.getKey(), obj);
+                        }
+                    return true;
+                }
         return false;
     }
 
@@ -102,8 +100,8 @@ public class MultiInputRecipes {
     public ItemStack getResult(ItemStack... inputs) {
         if (inputs != null && inputs.length == inputAmount) {
             MultiInput key = new MultiInput(shapeless, inputs);
-            if (recipes.containsKey(key)) {
-                return (ItemStack) recipes.get(key).get("output").getValue();
+            if (recipes.containsRow(key)) {
+                return (ItemStack) recipes.row(key).get("output").getValue();
             }
         }
         return null;
@@ -138,10 +136,10 @@ public class MultiInputRecipes {
     public Object getAdditionalValue(ItemStack[] inputs, String key) {
         if (inputs != null) {
             MultiInput stack = new MultiInput(shapeless, inputs);
-            if (recipes.containsKey(stack)) {
+            if (recipes.containsRow(stack)) {
                 if (key != null) {
-                    if (recipes.get(stack).containsKey(key))
-                        return recipes.get(stack).get(key).getValue();
+                    if (recipes.row(stack).containsKey(key))
+                        return recipes.row(stack).get(key).getValue();
                 }
             }
         }

@@ -1,11 +1,14 @@
-package de.paleocrafter.pmfw;
+package de.paleocrafter.pmfw.recipes;
 
-import java.util.HashMap;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 
 import net.minecraft.item.ItemStack;
 
-import de.paleocrafter.pmfw.recipe.RecipeData;
-import de.paleocrafter.pmfw.recipe.RecipeItemStack;
+import de.paleocrafter.pmfw.recipes.data.RecipeData;
+import de.paleocrafter.pmfw.recipes.data.RecipeItemStack;
 
 /**
  * 
@@ -18,7 +21,7 @@ import de.paleocrafter.pmfw.recipe.RecipeItemStack;
  * 
  */
 public class SimpleRecipes {
-    private HashMap<RecipeItemStack, HashMap<String, RecipeData>> recipes;
+    private Table<RecipeItemStack, String, RecipeData> recipes;
 
     /**
      * 
@@ -27,7 +30,7 @@ public class SimpleRecipes {
      * 
      */
     public SimpleRecipes() {
-        recipes = new HashMap<RecipeItemStack, HashMap<String, RecipeData>>();
+        recipes = HashBasedTable.create();
     }
 
     /**
@@ -61,19 +64,15 @@ public class SimpleRecipes {
      */
     public boolean addRecipe(ItemStack input, ItemStack output,
             RecipeData... additionalData) {
-        HashMap<String, RecipeData> data = new HashMap<String, RecipeData>();
-        if (output != null)
-            data.put("output", new RecipeData("output", output));
-        else
-            return false;
+        input = checkNotNull(input);
+        output = checkNotNull(output);
+        RecipeItemStack recipeStack = new RecipeItemStack(input);
+        recipes.put(recipeStack, "output", new RecipeData("output", output));
         if (additionalData != null && additionalData.length > 0)
             for (RecipeData obj : additionalData) {
                 if (obj != null && !obj.getKey().equals("output"))
-                    data.put(obj.getKey(), obj);
+                    recipes.put(recipeStack, obj.getKey(), obj);
             }
-        if (input == null)
-            return false;
-        recipes.put(new RecipeItemStack(input), data);
         return true;
     }
 
@@ -89,8 +88,8 @@ public class SimpleRecipes {
     public ItemStack getResult(ItemStack input) {
         if (input != null) {
             RecipeItemStack stack = new RecipeItemStack(input);
-            if (recipes.containsKey(stack))
-                return (ItemStack) recipes.get(stack).get("output").getValue();
+            if (recipes.containsRow(stack))
+                return (ItemStack) recipes.row(stack).get("output").getValue();
         }
         return null;
     }
@@ -120,10 +119,10 @@ public class SimpleRecipes {
     public Object getAdditionalValue(ItemStack input, String key) {
         if (input != null) {
             RecipeItemStack stack = new RecipeItemStack(input);
-            if (recipes.containsKey(stack)) {
+            if (recipes.containsRow(stack)) {
                 if (key != null) {
-                    if (recipes.get(stack).containsKey(key))
-                        return recipes.get(stack).get(key).getValue();
+                    if (recipes.containsColumn(key))
+                        return recipes.row(stack).get(key).getValue();
                 }
             }
         }
